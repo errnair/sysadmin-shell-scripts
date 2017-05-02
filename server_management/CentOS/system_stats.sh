@@ -1,4 +1,10 @@
 #!/bin/bash
+#################################################
+#                                               #
+#     A shell script to gather System and       #
+#     Hardware information for Linux servers.   #
+#                                               #
+#################################################
 
 echo -e "===== SYSTEM and HARDWARE INFO ====="
 freemem=$(free -m | awk 'NR==2 {print $4 " MB"}')
@@ -22,5 +28,3 @@ echo -e "\n8. Current Disk Usage:\n"
 df -h | awk 'NR>1 {print $4 " free on " $1}' 2>/dev/null
 echo -e "\n9. Private IPs: \n$privateip\n"
 echo -e "\n10. Public IPs: \n$publicip\n"
-
-
