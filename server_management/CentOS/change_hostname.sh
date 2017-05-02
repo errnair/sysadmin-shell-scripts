@@ -24,7 +24,7 @@ else
 fi
 
 # detect original hostname
-old_hostname=$(/usr/bin/hostnamectl | grep hostname | cut -d: -f2)
+old_hostname=$(/usr/bin/hostnamectl | grep hostname | cut -d: -f2 | sed 's/^[[:space:]]*//')
 
 # change hostname
 /usr/bin/hostnamectl set-hostname $new_hostname
