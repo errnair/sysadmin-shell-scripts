@@ -6,6 +6,13 @@
 #                                               #
 #################################################
 
+# check if the current user is root
+if [[ $(/usr/bin/id -u) != "0" ]]; then
+    echo -e "This looks like a 'non-root' user.\nPlease switch to 'root' and run the script again."
+    exit
+fi
+
+# Gather system related infomation
 echo -e "===== SYSTEM and HARDWARE INFO ====="
 freemem=$(free -m | awk 'NR==2 {print $4 " MB"}')
 ramspeed=$(dmidecode --type 17 | grep Speed | head -1 | sed 's/^[[:space:]]*//')
@@ -17,6 +24,7 @@ osinfo=$(cat /etc/redhat-release)
 publicip=$(curl -s checkip.dyndns.org | sed -e 's/.*Current IP Address: //' -e 's/<.*$//')
 privateip=$(ip -4 addr | grep inet | awk {'print $2'} | cut -d/ -f1)
 
+# Display the gathered info on the terminal
 echo -e "\n1. OS version: $osinfo\n"
 echo -e "\n2. Kernel Info: $kernel\n"
 echo -e "\n3. Free Memory: $freemem\n"
