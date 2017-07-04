@@ -21,11 +21,11 @@ else
     exit
 fi
 
-echo "\nCreating new user and adding the user to the 'wheel' group"
+echo -e "\nCreating new user and adding the user to the 'wheel' group"
 useradd $newuser
 usermod -aG wheel $newuser
 
-echo "\nCreating webroot and log locations, and assigning required permissions"
+echo -e "\nCreating webroot and log locations, and assigning required permissions"
 mkdir /home/$newuser/public_html
 mkdir /home/$newuser/logs
 chcon -Rt httpd_log_t /home/$newuser/logs/
@@ -33,7 +33,12 @@ chcon -Rt httpd_sys_content_t /home/$newuser/public_html/
 chmod 711 /home/$newuser/
 chown -R $newuser:$newuser /home/$newuser/
 
-echo "Creating Python3 virtual environment in $newuser's webroot"
-su - $newuser
+echo -e "\nCreating Python3 virtual environment in $newuser's webroot"
+su - $newuser << 'EoC'
 cd public_html
-python3 -m venv flaskr_env
+python3 -m venv py3_env
+EoC
+
+echo -e "\nCopying a test index file"
+cp index.html /home/$newuser/public_html/
+chown $newuser:$newuser /home/$newuser/public_html/index.html
