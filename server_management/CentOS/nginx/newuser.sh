@@ -20,3 +20,13 @@ else
     echo -e "Usage: ./newuser.sh <new username>\nPlease run the script once more WITH the new username."
     exit
 fi
+
+echo "\nCreating new user and adding the user to the 'wheel' group"
+useradd $newuser
+usermod -aG wheel $newuser
+
+echo "\nCreating webroot and log locations, and assigning required permissions"
+mkdir /home/$newuser/public_html
+mkdir /home/$newuser/logs
+chcon -Rt httpd_log_t /home/$newuser/logs/
+chcon -Rt httpd_sys_content_t /home/$newuser/public_html/
