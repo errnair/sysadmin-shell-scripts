@@ -30,3 +30,10 @@ mkdir /home/$newuser/public_html
 mkdir /home/$newuser/logs
 chcon -Rt httpd_log_t /home/$newuser/logs/
 chcon -Rt httpd_sys_content_t /home/$newuser/public_html/
+chmod 711 /home/$newuser/
+chown -R $newuser:$newuser /home/$newuser/
+
+echo "Creating Python3 virtual environment in $newuser's webroot"
+su - $newuser
+cd public_html
+python3 -m venv flaskr_env
