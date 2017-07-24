@@ -12,12 +12,27 @@
 #    exit
 #fi
 
+jvconfirm="y"
+
+install_java() {
+    echo -e "\nIn install_java\n"
+}
 install_jenkins() {
     echo -e "\nIn install_jenkins\n"
 }
 
-if hash java 2>/dev/null; then
-    echo "Jenkins requires Java, but it isn't installed."
-else
+if $(java -version 2>&1 >/dev/null | grep 'version'); then
+    echo -e "\nJava is installed, proceeding with Jenkins installation."
     install_jenkins
+else
+    echo -e "\nJenkins requires Java to be installed. Proceed?(Y/n):"
+    read jvconfirm
+    if [ "$jvconfirm" == "y" ] || [ "$jvconfirm" = "Y" ]; then
+        install_java
+    elif [ "$jvconfirm" = "n" ] || [ "$jvconfirm" = "N" ]; then
+        echo -e "\nJenkins requires Java to be installed first. Aborting install process..."
+        exit
+    else
+        echo -e "\nInvalid input. Exiting..."
+    fi
 fi
