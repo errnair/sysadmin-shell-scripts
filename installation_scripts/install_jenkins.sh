@@ -1,8 +1,7 @@
 #!/bin/bash
 #################################################
 #                                               #
-# A shell script to set SELinux as 'permissive' #
-# on CentoS.                                    #
+# A shell script to install Jenkins on CentOS   #
 #                                               #
 #################################################
 
@@ -14,6 +13,7 @@ fi
 
 jvconfirm="y"
 
+# Function to install Java using Yum
 install_java() {
     echo -e "\nIn install_java\n"
     yum update -y
@@ -22,6 +22,8 @@ install_java() {
     echo -e "\n\nJava installation complete.\nJava version: $java_version\n\n"
     install_jenkins
 }
+
+# Function to install Jenkins using the Jenkins repo
 install_jenkins() {
     echo -e "\nIn install_jenkins\n"
     yum install git -y
@@ -41,6 +43,7 @@ install_jenkins() {
     exit
 }
 
+# Check if Java is installed, and install Jenkins
 if $(java -version 2>&1 >/dev/null | grep 'version'); then
     echo -e "\nJava is installed, proceeding with Jenkins installation."
     install_jenkins
