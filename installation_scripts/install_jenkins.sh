@@ -38,6 +38,9 @@ install_jenkins() {
     systemctl start jenkins
     systemctl status jenkins
 
+    firewall-cmd --zone=public --add-port=8080/tcp --permanent
+    firewall-cmd --reload
+
     local_ip=$(hostname -I)
     echo -e "\n\nJenkins installation is complete.\nAccess the Jenkins interface from http://$local_ip:8080\nThe default password is located at '/var/lib/jenkins/secrets/initialAdminPassword'\n\nExiting..."
     exit
