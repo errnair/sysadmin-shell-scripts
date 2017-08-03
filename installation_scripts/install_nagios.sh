@@ -11,6 +11,8 @@ if [[ $(/usr/bin/id -u) != "0" ]]; then
     exit
 fi
 
+ipaddr=$(hostname -I | cut -d" " -f 1)
+
 preresquisites() {
     yum update -y
     yum groupinstall "Development Tools" -y
@@ -77,8 +79,29 @@ install_nrpe() {
     firewall-cmd --zone=public --add-port=5666/tcp
     firewall-cmd --zone=public --add-port=5666/tcp --permanent
     firewall-cmd --reload
+}
 
+configuration() {
     sed -i.bak 's/^\(dont_blame_nrpe=\).*/\11/' /usr/local/nagios/etc/nrpe.cfg
-    ipaddr=$(hostname -I | cut -d" " -f 1)
+    sed -i "s/^\(allowed_hosts=127.0.0.1,::1\).*/\1,$ipaddr/" /usr/local/nagios/etc/nrpe.cfg
+    
+    systemctl start nrpe.service
+
+    echo -e "\nlocalhost\n/usr/local/nagios/libexec/check_nrpe -H 127.0.0.1\n" >> /tmp/nrpe_test.txt
+    /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1 >> /tmp/nrpe_test.txt
+    echo -e "\nIP\n/usr/local/nagios/libexec/check_nrpe -H $ipaddr\n" >> /tmp/nrpe_test.txt
+    /usr/local/nagios/libexec/check_nrpe -H $ipaddr >> /tmp/nrpe_test.txt
+
+    sed -i "s/^\(command\[check_load\]=\/usr\/local\/nagios\/libexec\/check_load\).*/\1\ \-w\ 15,10,5\ \-c\ 30,25,20/" /usr/local/nagios/etc/nrpe.cfg
+    systemctl restart nrpe.service
+
+    echo -e "\ncheck_load\n/usr/local/nagios/libexec/check_nrpe -H 127.0.0.1 -c check_load\n" >> /tmp/nrpe_test.txt
+    /usr/local/nagios/libexec/check_nrpe -H 127.0.0.1 -c check_load >> /tmp/nrpe_test.txt
+
+    echo "cfg_dir=/usr/local/nagios/etc/servers" >> /usr/local/nagios/etc/nagios.cfg
+    mkdir /usr/local/nagios/etc/servers
+
+    sed -i 's/nagios@localhost/admin@localhost/g' /usr/local/nagios/etc/objects/contacts.cfg
+
 
 }
