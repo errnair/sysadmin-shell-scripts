@@ -13,7 +13,7 @@ fi
 
 ipaddr=$(hostname -I | cut -d" " -f 1)
 
-preresquisites() {
+prerequisites() {
     yum update -y
     yum groupinstall "Development Tools" -y
     yum install xinetd openssl-devel net-snmp gd-devel gd -y
@@ -100,8 +100,49 @@ configuration() {
 
     echo "cfg_dir=/usr/local/nagios/etc/servers" >> /usr/local/nagios/etc/nagios.cfg
     mkdir /usr/local/nagios/etc/servers
-
+          
     sed -i 's/nagios@localhost/admin@localhost/g' /usr/local/nagios/etc/objects/contacts.cfg
 
+    echo -e "\n\ndefine command{\n\tcommand_name check_nrpe\n\tcommand_line \$USER1\$/check_nrpe -H \$HOSTADDRESS\$ -c \$ARG1\$\n}" >> /usr/local/nagios/etc/objects/commands.cfg
+    
+    echo -e "\n\n######################\n   Enter the password for the Nagios Admin - 'nagiosadmin'\n######################\n\n"
+    htpasswd -c /usr/local/nagios/etc/htpasswd.users nagiosadmin
 
+    systemctl enable nagios
+
+    echo -e "\nTesting Nagios configuration\n"
+    /usr/local/nagios/bin/nagios -v /usr/local/nagios/etc/nagios.cfg
+
+    echo -e "\nStarting Nagios service\n"
+    systemctl start nagios
+    systemctl restart nrpe.service
+    systemctl restart httpd
 }
+
+post_installation() {
+    cd
+    yum install php php-mysql php-devel -y
+    systemctl restart httpd
+
+    chcon -R --reference=/var/www/html /usr/local/nagios/share
+    chcon -R --reference=/var/www/html /usr/local/nagios/var
+    chcon -R --reference=/var/www/cgi-bin /usr/local/nagios/sbin
+    chcon -R -t httpd_sys_rw_content_t /usr/local/nagios/var/rw
+
+    systemctl restart httpd
+
+    echo -e "\nInstallation Complete..\nLogin using the URL: http://$ipaddr/nagios\nUsername:nagiosadmin\nPassword:<set up earlier>"
+}
+
+echo -e "\n\nInstalling prerequisites: Yum Update, Install Dev-Tools, Install Apache\n\n"
+prerequisites
+echo -e "\n\nInstalling Nagios\n\n"
+install_nagios
+echo -e "\n\nInstalling Nagios Plugins\n\n"
+install_nagios_plugins
+echo -e "\n\nInstalling NRPE\n\n"
+install_nrpe
+echo -e "\n\nConfiguring NRPE and Nagios\n\n"
+configuration
+echo -e "\n\nPost Installation: Apache context\n\n"
+post_installation
