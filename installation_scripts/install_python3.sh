@@ -16,7 +16,7 @@ fi
 # Install packages required to build Python from source
 echo -e "\nInstalling developement tools required to build from source."
 yum groupinstall "Development Tools" -y > /dev/null 2>&1
-yum install zlib-devel wget -y > /dev/null 2>&1
+yum install zlib-devel wget openssl-devel -y > /dev/null 2>&1
 
 # To download Python 3's source from the official repository
 echo -e "\nDownloading Python source..."
