@@ -32,7 +32,7 @@ mkdir /usr/bin/python36/
 
 # Compile and build Python3 from the extracted source
 echo -e "\nCompiling the Python source..."
-./configure --prefix=/usr/bin/python36/ > /dev/null 2>&1
+./configure --prefix=/usr/bin/python36/ --enable-optimizations > /dev/null 2>&1
 echo -e "\nBuilding from source..."
 make > /dev/null 2>&1
 make install > /dev/null 2>&1
