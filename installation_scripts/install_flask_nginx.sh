@@ -68,14 +68,16 @@ create_vhost() {
 server {
     listen  80;
 
-    server_name $username.com www.$username.com;
+    server_name $domain www.$domain;
     access_log /home/$username/logs/access.log;
     error_log /home/$username/logs/error.log;
 
     location / {
-        root  /home/$username/public_html;
-        index  index.html index.htm index.php;
-        try_files \$uri \$uri/ =404;
+        proxy_set_header Host $http_host;
+        proxy_set_header X-Real-IP $remote_addr;
+        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
+        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_pass http://unix:/home/$username/public_html/$username.sock;
     }
 
     error_page  500 502 503 504  /50x.html;
@@ -125,7 +127,7 @@ install_python3() {
 
 }
 
-create_venv() {
+install_flask_gunicorn() {
     su - $username; cd public_html
     python3 -m venv flask_demoenv
     source flask_demoenv/bin/activate
@@ -136,8 +138,35 @@ create_venv() {
     deactivate; logout
 }
 
-configure_webserver(){
+configure_gunicorn(){
 
+    cat > /etc/systemd/system/$username.service <<service
+[Unit]
+Description=Gunicorn instance to serve $username
+After=network.target
+
+[Service]
+User=$username
+Group=nginx
+WorkingDirectory=/home/$username/public_html
+Environment="PATH=/home/$username/public_html/flask_demoenv/bin"
+ExecStart=/home/$username/public_html/flask_demoenv/bin/gunicorn --workers 3 --bind unix:$username.sock -m 007 run
+
+[Install]
+WantedBy=multi-user.target
+service
+
+    systemctl enable $username
+    systemctl start $username
+    systemctl status $username
+}
+
+post_install(){
+
+    usermod -a -G $username nginx
+    nginx -t
+    systemctl restart nginx
+    setenforce 0
 }
 
 check_domain
@@ -148,7 +177,8 @@ install_python3
 
 chsh -s /bin/bash $username
 
-create_venv
-configure_webserver
+install_flask_gunicorn
+configure_gunicorn
+post_install
 
-echo -e "\n\nInstallation complete.\nNow, add the following line to your local 'hosts' file (/etc/hosts in *nix systems)\n\n$ipaddr\t$domain www.$domain\n\nExiting..."
+echo -e "\n\nInstallation complete.\nDomain:$domain\nUsername:$username\nHome Directory:/home/$username\n\nAdd the following to your local 'hosts' file:\n$ipaddr\t$domain www.$domain\n\nExiting..."
