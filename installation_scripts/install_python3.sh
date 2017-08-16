@@ -7,9 +7,9 @@
 
 # Check if gcc exists on the server
 if hash gcc 2>/dev/null; then
-	echo "\nGCC exists. Continuing with the installation."
+	echo -e "\nGCC exists. Continuing with the installation."
 else
-	echo "\nInstalling the GCC compiler."
+	echo -e "\nInstalling the GCC compiler."
 	yum install gcc -y > /dev/null 2>&1
 fi
 
