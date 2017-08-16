@@ -1,16 +1,17 @@
 #!/bin/bash
 #################################################
 #                                               #
-# A shell script to set SELinux as 'permissive' #
-# on CentoS.                                    #
-#                                               #
+# A shell script to sync IMAP email accounts    #
+# .                                             #
 #################################################
 
-user1=$1
-pass1=$2
+host1=$1
+user1=$2
+pass1=$3
 
-user2=$3
-pass2=$4
+host2=$4
+user2=$5
+pass2=$6
 
 # check if the current user is root
 if [[ $(/usr/bin/id -u) != "0" ]]; then
@@ -34,5 +35,9 @@ check_imapsync() {
 
 sync_emails() {
     echo -e "\nSyncing emails now...\n"
+    imapsync --host1 "$host1"  --user1 "$user1" --password1 "$pass1" --host2 "$host2" --user2 "$user2" --password2 "$pass2" --automap
     echo -e "\nEmail Sync complete...\n"
 }
+
+check_imapsync
+sync_emails
