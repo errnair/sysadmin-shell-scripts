@@ -20,7 +20,7 @@ check_domain() {
         echo -e "Usage: ./install_nginx domain-name.tld"
         exit
     elif [[ $(grep -o "\." <<< "$domain" | wc -l) > 1 || $(grep -o "\." <<< "$domain" | wc -l) < 1 ]]; then
-        echo -e "Invalid domain! Usage: ./install_nginx domain-name.tld"
+        echo -e "Invalid domain! Usage: ./install_nginx main-domain-name.tld"
         exit
     fi
 }
