@@ -50,6 +50,7 @@ create_user() {
     echo -e "<html>\n<head>\n\t<title>NGINX - TEST</title>\n</head>\n<body>\n\t<h3>THIS IS A TEST<h3>\n\t<h4>Index file loaded from /home/$username/public_html/<h4>\n</body>\n</html>" >> /home/$username/public_html/index.html
 
     chown -Rv $username:$username /home/$username
+    usermod -aG wheel $username
 }
 
 create_vhost() {
@@ -128,14 +129,18 @@ install_python3() {
 }
 
 install_flask_gunicorn() {
-    su - $username; cd public_html
+    su $username <<'EOF'
+    cd public_html
     python3 -m venv flask_demoenv
     source flask_demoenv/bin/activate
-
-    # Download from VCS
-
     python3 -m pip install -r requirements.txt
     deactivate; logout
+
+EOF
+    # Download from VCS
+    echo -e "PENDING: Download project from Git"
+    exit
+
 }
 
 configure_gunicorn(){
