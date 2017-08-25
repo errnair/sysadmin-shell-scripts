@@ -38,7 +38,7 @@ install_nginx() {
 }
 
 create_user() {
-    useradd -s /sbin/nologin $username
+    useradd $username
     chmod go+x /home/$username
 
     mkdir /home/$username/logs
@@ -129,17 +129,18 @@ install_python3() {
 }
 
 install_flask_gunicorn() {
-    su $username <<'EOF'
+
+su - $username <<'EOF'
     cd public_html
     python3 -m venv flask_demoenv
     source flask_demoenv/bin/activate
-    python3 -m pip install -r requirements.txt
-    deactivate; logout
-
+    git init
+    git remote add origin https://github.com/rn4ir/flask-gunicorn-demo.git
+    git pull origin master
+    /usr/bin/yes | pip install -r requirements.txt
+    deactivate
+    logout
 EOF
-    # Download from VCS
-    echo -e "PENDING: Download project from Git"
-    exit
 
 }
 
@@ -179,8 +180,6 @@ install_nginx
 create_user
 create_vhost
 install_python3
-
-chsh -s /bin/bash $username
 
 install_flask_gunicorn
 configure_gunicorn
