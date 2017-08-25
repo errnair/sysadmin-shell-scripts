@@ -7,3 +7,4 @@
 - install_nginx.sh - Installs Nginx
 - install_python3.sh - Installs Python3 from source.
 - install_salt.sh - Installs saltstack (`yum`)
+- install_flask.sh - Installs Flask, Gunicorn, configures Nginx for Gunicorn, downloads and installs a demo Flask app.
