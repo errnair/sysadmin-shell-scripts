@@ -1,7 +1,7 @@
 #!/bin/bash
 #################################################
 #                                               #
-# A shell script to install Nagios on CentOS    #
+# A shell script to install Nginx on CentOS     #
 #                                               #
 #################################################
 
