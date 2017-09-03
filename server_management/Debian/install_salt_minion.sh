@@ -28,3 +28,5 @@ install_minion() {
     systemctl enable salt-minion
     systemctl start salt-minion
 }
+
+install_minion
