@@ -12,6 +12,13 @@ if [[ $(/usr/bin/id -u) != "0" ]]; then
     exit
 fi
 
+if [ "$1" != "" ]; then
+    new_hostname=$1
+else
+    echo -e "Usage: ./install_salt_minion.sh <salt-master-ip>\nPlease run the script once more WITH the Salt Master's IP address."
+    exit
+fi
+
 MASTERIP=$1
 
 install_minion() {
