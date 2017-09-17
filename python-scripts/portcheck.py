@@ -1,11 +1,17 @@
-#!/usr/bin/env python
-
+#!/usr/bin/env pythonend = timer()
+print(end - start)    
+"""
+Program to check if a port is open.
+Takes an IP and a port as inputs and checks if the port is open at that IP.
+Usage : python portcheck.py <host> <port>
+"""
 import errno, sys
 from socket import *
 
 
 if (len(sys.argv) > 1):
-    
+end = timer()
+print(end - start)    
     # Assign the first argument (server) to 'remote_host'
     remote_host = sys.argv[1]
     # Assign the second argument (port) to 'server_port'
