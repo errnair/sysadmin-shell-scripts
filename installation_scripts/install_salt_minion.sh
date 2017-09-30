@@ -13,7 +13,15 @@ if [[ $(/usr/bin/id -u) != "0" ]]; then
     exit
 fi
 
+salt_master=$1
 os_type=$(gawk -F= '/^ID=/{print $2}' /etc/os-release)
+
+check_master() {
+    if [[ $salt_master == '' ]]; then
+        echo -e "Usage: ./install_salt_minion.sh salt-master-ip   OR \nUsage: ./install_salt_minion.sh salt-master-hostname"
+        exit
+    fi
+}
 
 prerequisites_centos(){
 
@@ -47,6 +55,14 @@ install_saltminion_centos() {
 install_saltminion_debian() {
     apt-get install salt-common salt-minion salt-ssh -y
 }
+
+configure_saltminion() {
+    systemctl enable salt-minion
+    sed -i.bak "s/\#master\:\ salt/master\: $ip_address/g" /etc/salt/minion
+    systemctl start salt-minion
+}
+
+check_master
 
 if [[ $os_type == "\"centos\"" || $os_type == "\"rhel\"" ]]; then
     prerequisites_centos
