@@ -36,7 +36,7 @@ gpgkey=https://repo.saltstack.com/yum/redhat/\$releasever/\$basearch/latest/SALT
 saltrepo
 
     yum update -y
-    yum install systemd systemd-python -y
+    yum install systemd systemd-python firewalld -y
 }
 
 prerequisites_debian() {
@@ -45,7 +45,7 @@ prerequisites_debian() {
   
     apt-get upgrade -y
     apt-get update -y
-    apt-get install systemd python-systemd -y
+    apt-get install systemd firewalld python-systemd -y
 }
 
 install_saltminion_centos() {
@@ -57,8 +57,12 @@ install_saltminion_debian() {
 }
 
 configure_saltminion() {
+    sed -i.bak "s/\#master\:\ salt/master\: $salt_master/g" /etc/salt/minion
+
+    firewall-cmd --zone=public --add-port=4506/tcp --permanent
+    firewall-cmd --reload
+
     systemctl enable salt-minion
-    sed -i.bak "s/\#master\:\ salt/master\: $ip_address/g" /etc/salt/minion
     systemctl start salt-minion
 }
 
@@ -71,3 +75,5 @@ elif [[ $os_type == "debian" || $os_type == "ubuntu" ]]; then
     prerequisites_debian
     install_saltminion_debian
 fi
+
+configure_saltminion
