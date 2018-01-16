@@ -12,9 +12,13 @@ if [ -z "$pagelink" ]; then
 fi
 
 mkdir -p webpages
-dldir="webpages/webpage.link"
+
+filename=$(echo $pagelink | sed 's:/*$::' | sed 's#.*/##')
+dldir="webpages/$filename.html"
+
 wget -q -O "$dldir" "$pagelink"
 get_exitcode=$?
+
 if [ $get_exitcode -ne 0 ]; then
     echo "ERROR: webpagedl: the link '$pagelink' does not return a document (wget exit code $get_exitcode)" 1>&2
     exit 2
