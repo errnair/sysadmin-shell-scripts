@@ -26,8 +26,8 @@ wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz > /dev/null 2>&
 
 # Extract the Python source
 echo -e "\nUnzipping Python source..."
-tar -xf Python-3.6.1.tar.xz > /dev/null 2>&1
-cd Python-3.6.1 > /dev/null 2>&1
+tar -xf Python-3.6.4.tar.xz > /dev/null 2>&1
+cd Python-3.6.4 > /dev/null 2>&1
 mkdir /usr/bin/python36/
 
 # Compile and build Python3 from the extracted source
