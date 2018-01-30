@@ -8,3 +8,4 @@
 - install_python3.sh - Installs Python3 from source.
 - install_salt.sh - Installs saltstack (`yum`)
 - install_flask.sh - Installs Flask, Gunicorn, configures Nginx for Gunicorn, downloads and installs a [demo Flask app](https://github.com/rn4ir/flask-gunicorn-demo).
+- install_aquid.sh - Installs Squid Proxy (`yum`)
