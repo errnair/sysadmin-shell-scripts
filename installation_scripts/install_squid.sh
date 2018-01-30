@@ -17,4 +17,29 @@ install_squid() {
     yum install squid -y
 }
 
+start_squid() {
+    firewall-cmd --add-service=squid --permanent
+    firewall-cmd --reload
+
+    systemctl enable squid
+    systemctl start squid
+    systemctl status squid
+}
+
+restart_squid() {
+    systemctl restart squid
+}
+
+backup_conf() {
+    cp -fv /etc/squid/squid.conf "/etc/squid/squid.conf_bak-$(date +"%m-%d-%y")"
+}
+
+initial_conf() {
+    touch /etc/squid/blocked_sites
+
+
+}
+
 install_squid
+start_squid
+backup_conf
