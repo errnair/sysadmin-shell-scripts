@@ -36,10 +36,10 @@ backup_conf() {
 
 initial_conf() {
     touch /etc/squid/blocked_sites
-
-
 }
 
 install_squid
 start_squid
 backup_conf
+initial_conf
+restart_squid
