@@ -22,7 +22,7 @@ yum install zlib-devel wget openssl-devel -y > /dev/null 2>&1
 echo -e "\nDownloading Python source..."
 mkdir -p /opt/src/python3 > /dev/null 2>&1
 cd /opt/src/python3/ > /dev/null 2>&1
-wget https://www.python.org/ftp/python/3.6.1/Python-3.6.1.tar.xz > /dev/null 2>&1
+wget https://www.python.org/ftp/python/3.6.4/Python-3.6.4.tar.xz > /dev/null 2>&1
 
 # Extract the Python source
 echo -e "\nUnzipping Python source..."
