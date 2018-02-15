@@ -14,13 +14,11 @@ fi
 
 # Check if user-input exists
 if [ "$1" != "" ]; then
-    new_hostname=$1
+    MASTERIP=$1
 else
     echo -e "Usage: ./install_salt_minion.sh <salt-master-ip>\nPlease run the script once more WITH the Salt Master's IP address."
     exit
 fi
-
-MASTERIP=$1
 
 # Function to install salt-minion
 install_minion() {
