@@ -1,0 +1,166 @@
+# System Administration Shell Scripts - .gitignore
+
+# ============================================
+# Configuration Files (contain secrets)
+# ============================================
+config/*.conf
+!config/*.conf.example
+!config/defaults.conf
+
+# Credential files
+.my.cnf
+.pgpass
+*.credentials
+*_credentials
+secrets/
+.secrets/
+
+# ============================================
+# Backup Files
+# ============================================
+*.backup
+*.backup-*
+*.bak
+*~
+.backup/
+backups/
+*.tar.gz
+*.tar.bz2
+*.tar.xz
+*.zip
+
+# ============================================
+# Log Files
+# ============================================
+*.log
+logs/
+*.log.*
+
+# ============================================
+# Temporary Files
+# ============================================
+*.tmp
+*.temp
+tmp/
+temp/
+.tmp/
+*.swp
+*.swo
+*~
+
+# ============================================
+# Python
+# ============================================
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.hypothesis/
+*.cover
+.mypy_cache/
+.dmypy.json
+dmypy.json
+venv/
+ENV/
+env/
+.venv
+
+# ============================================
+# Node.js (if any)
+# ============================================
+node_modules/
+npm-debug.log
+yarn-error.log
+package-lock.json
+yarn.lock
+
+# ============================================
+# IDE and Editor Files
+# ============================================
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+.DS_Store
+Thumbs.db
+
+# ============================================
+# OS-specific
+# ============================================
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+# ============================================
+# Testing
+# ============================================
+test-results/
+coverage/
+.nyc_output/
+
+# ============================================
+# Build Artifacts
+# ============================================
+*.o
+*.a
+*.out
+*.exe
+*.rpm
+*.deb
+
+# ============================================
+# SSH and GPG
+# ============================================
+*.pem
+*.key
+!*.pub
+id_rsa
+id_dsa
+id_ed25519
+*.ppk
+
+# ============================================
+# Database Files
+# ============================================
+*.sqlite
+*.sqlite3
+*.db
+
+# ============================================
+# Downloaded Software
+# ============================================
+downloads/
+src/
+sources/
+*.tar.*
+*.tgz
+
+# ============================================
+# Custom
+# ============================================
+# Add your custom ignores here

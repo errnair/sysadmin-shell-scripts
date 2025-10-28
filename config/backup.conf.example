@@ -1,0 +1,60 @@
+# ============================================
+# Backup Configuration
+# ============================================
+# Copy this file to backup.conf and customize
+
+# Backup Destinations
+BACKUP_LOCAL_DIR="/backups"
+BACKUP_REMOTE_ENABLED=false
+
+# Remote Backup (choose one)
+# S3 Configuration
+S3_ENABLED=false
+S3_BUCKET=""
+S3_REGION="us-east-1"
+S3_STORAGE_CLASS="STANDARD_IA"
+
+# rsync Configuration
+RSYNC_ENABLED=false
+RSYNC_HOST=""
+RSYNC_USER=""
+RSYNC_PATH=""
+RSYNC_PORT=22
+
+# Retention Policy
+RETENTION_DAYS=30
+RETENTION_WEEKS=8
+RETENTION_MONTHS=12
+
+# Compression
+COMPRESSION_TOOL="gzip"  # gzip, bzip2, xz, zstd
+COMPRESSION_LEVEL=6  # 1-9
+
+# Encryption
+ENCRYPT_BACKUPS=false
+GPG_RECIPIENT=""
+GPG_KEY_ID=""
+
+# Integrity
+VERIFY_CHECKSUMS=true
+CHECKSUM_ALGORITHM="sha256"
+
+# Exclusions
+EXCLUDE_PATTERNS=(
+    "*.tmp"
+    "*.cache"
+    "*.log"
+    ".git"
+    "node_modules"
+    "__pycache__"
+)
+
+# Notifications
+EMAIL_NOTIFICATIONS=false
+EMAIL_ON_SUCCESS=false
+EMAIL_ON_FAILURE=true
+NOTIFICATION_EMAIL=""
+
+# Logging
+LOG_FILE="/var/log/backups.log"
+SYSLOG_ENABLED=true

@@ -1,0 +1,29 @@
+# ============================================
+# Ansible Installation Configuration
+# ============================================
+# Copy this file to ansible.conf and customize
+
+# Ansible Version
+ANSIBLE_VERSION="latest"  # or specific version like "2.15.0"
+
+# Installation Method
+INSTALL_METHOD="package"  # package, pip, or source
+
+# Install Type
+INSTALL_TYPE="full"  # full or core (ansible vs ansible-core)
+
+# Collections
+INSTALL_COLLECTIONS=true
+COLLECTIONS=(
+    "community.general"
+    "ansible.posix"
+    "community.docker"
+)
+
+# Configuration
+ANSIBLE_CONFIG_DIR="/etc/ansible"
+ANSIBLE_INVENTORY_DIR="/etc/ansible/inventory"
+
+# Python Requirements
+PYTHON_VERSION="3.11"
+INSTALL_PYTHON_DEPS=true
