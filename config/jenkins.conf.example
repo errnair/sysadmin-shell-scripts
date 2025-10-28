@@ -1,0 +1,38 @@
+# ============================================
+# Jenkins Installation Configuration
+# ============================================
+# Copy this file to jenkins.conf and customize
+
+# Jenkins Version
+JENKINS_VERSION="lts"  # lts or latest
+
+# Java Configuration
+JAVA_VERSION="17"  # 11 or 17
+JAVA_DISTRIBUTION="openjdk"  # openjdk, amazon-corretto, adoptopenjdk
+
+# Jenkins Configuration
+JENKINS_HOME="/var/lib/jenkins"
+JENKINS_PORT=8080
+JENKINS_ADMIN_EMAIL=""
+
+# Memory Settings
+JENKINS_JAVA_OPTS="-Xms512m -Xmx2g"
+
+# Plugins to Install
+INSTALL_PLUGINS=true
+PLUGINS=(
+    "git"
+    "workflow-aggregator"
+    "pipeline-stage-view"
+    "blueocean"
+    "docker-workflow"
+    "kubernetes"
+)
+
+# Security
+SKIP_INITIAL_SETUP=false
+ENABLE_CSRF_PROTECTION=true
+
+# Backup
+BACKUP_DIR="/var/backups/jenkins"
+BACKUP_RETENTION_DAYS=30

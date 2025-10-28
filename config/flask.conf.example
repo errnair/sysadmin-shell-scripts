@@ -1,0 +1,43 @@
+# ============================================
+# Flask + Nginx Installation Configuration
+# ============================================
+# Copy this file to flask.conf and customize
+
+# Domain Configuration
+DOMAIN=""  # e.g., example.com
+ADMIN_EMAIL=""  # e.g., admin@example.com
+
+# User Configuration
+USERNAME=""  # Auto-generated from domain if empty
+CREATE_USER=true
+
+# Python Configuration
+PYTHON_VERSION="3.11"
+VENV_NAME="flask_env"
+
+# Application Repository
+FLASK_REPO=""  # Git repository URL
+FLASK_BRANCH="main"
+APP_MODULE="app:app"  # module:application
+
+# Gunicorn Configuration
+GUNICORN_WORKERS=3
+GUNICORN_WORKER_CLASS="sync"  # sync, gevent, eventlet
+GUNICORN_TIMEOUT=30
+
+# Nginx Configuration
+NGINX_REPO="official"  # official or system
+ENABLE_SSL=true
+SSL_PROVIDER="letsencrypt"  # letsencrypt or self-signed
+
+# SSL Configuration (Let's Encrypt)
+CERTBOT_EMAIL=""
+CERTBOT_AUTO_RENEW=true
+
+# Security
+ENABLE_SELINUX_BOOLEANS=true
+HARDEN_SYSTEMD_SERVICE=true
+
+# Logging
+ACCESS_LOG_PATH="/home/\$USERNAME/logs/access.log"
+ERROR_LOG_PATH="/home/\$USERNAME/logs/error.log"
