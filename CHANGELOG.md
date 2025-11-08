@@ -1,257 +1,105 @@
 # Changelog
 
-All notable changes to this project will be documented in this file.
+All notable changes to this project.
 
-The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
-and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
+Format based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [2.0.0] - 2024-01-15
 
-Complete modernization of all scripts with multi-OS support, enhanced security, and comprehensive documentation.
+Major modernization with multi-OS support and better security.
 
 ### Added
 
-#### Infrastructure
-- Shared common library (`lib/common.sh`, 548 lines) with reusable functions for:
-  - OS detection (RHEL/Debian families)
-  - Package manager abstraction (dnf/yum/apt)
-  - Input validation (domains, IPs, ports, hostnames)
-  - Colored output functions
-  - Syslog logging integration
-  - Secure password input
-  - Automatic backup and cleanup functions
-- Configuration directory (`config/`) with example templates
-- Comprehensive project documentation:
-  - `README.md` - Complete script catalog and usage guide
-  - `MIGRATION.md` - Migration guide from old to new scripts
-  - `EXAMPLES.md` - Comprehensive usage examples and workflows
-  - `CONTRIBUTING.md` - Contribution guidelines
-  - `CHANGELOG.md` - Version history
-  - `LICENSE` - MIT License
-- `.gitignore` for proper version control
+**Infrastructure:**
+- Shared library `lib/common.sh` (548 lines) with functions for OS detection, package manager abstraction, input validation, colored output, and syslog logging
+- Config directory with templates
+- Documentation: README, MIGRATION, EXAMPLES, CONTRIBUTING, CHANGELOG, LICENSE
+- `.gitignore` for version control
 
-#### Installation Scripts (9 scripts)
-All installation scripts now support RHEL 8/9, Rocky Linux, AlmaLinux, Ubuntu 20.04+, and Debian 11+:
+**Installation Scripts (9 scripts):**
 
-- `install_ansible.sh` - Ansible automation platform
-  - Package or pip installation options
-  - Version selection support
-  - Generates ansible.cfg and inventory files
-  - Optional collection installation
+All work on RHEL 8/9, Rocky, AlmaLinux, Ubuntu 20.04+, Debian 11+:
 
-- `install_flask.sh` - Flask + Gunicorn + Nginx stack
-  - Creates dedicated user with virtual environment
-  - Systemd service configuration
-  - Nginx reverse proxy setup
-  - Optional SSL with Let's Encrypt
-  - Git deployment support
-  - Firewall and SELinux configuration
+- `install_ansible.sh` - Ansible with package or pip installation
+- `install_flask.sh` - Flask + Gunicorn + Nginx, optional SSL
+- `install_jenkins.sh` - Jenkins with Java validation
+- `install_nagios.sh` - Nagios Core + Plugins + NRPE from source
+- `install_nginx.sh` - Three modes (static/proxy/Flask), optional SSL
+- `install_python3.sh` - Python 3.12.7, tries packages first then source
+- `install_salt.sh` - SaltStack master with example states
+- `install_salt_minion.sh` - SaltStack minion (moved from server_management/Debian/)
+- `install_squid.sh` - Squid proxy (forward/transparent/reverse modes)
 
-- `install_jenkins.sh` - Jenkins CI/CD server
-  - Java 17+ validation
-  - LTS/weekly version selection
-  - Firewall configuration
-  - Displays initial admin password
-  - Works on RHEL and Debian families
+**Server Management Scripts (3 scripts):**
 
-- `install_nagios.sh` - Nagios Core monitoring system
-  - Builds from source (latest version)
-  - Nagios Plugins included
-  - NRPE for remote monitoring
-  - Apache with authentication
-  - Secure password input (no hardcoding)
-  - Example configurations included
-  - Firewall and SELinux configuration
+- `system_stats.sh` - System information with text/JSON/CSV output, virtualization detection, container runtime detection
+- `change_hostname.sh` - Hostname management with RFC 1123 validation, cloud detection (AWS/Azure/GCP)
+- `selinux_troubleshoot.sh` - SELinux troubleshooting (renamed from permissive_selinux.sh) with 5 commands: status, denials, suggest, permissive, enforcing
 
-- `install_nginx.sh` - Nginx web server
-  - Three application types: static, reverse proxy, Flask
-  - Optional SSL with Let's Encrypt
-  - SELinux boolean configuration
-  - Firewall setup (firewalld and ufw)
-  - Test page generation
+**Utility Scripts (4 scripts):**
 
-- `install_python3.sh` - Python 3.12.7
-  - Auto-detects system packages first
-  - Falls back to source compilation
-  - Checksum verification for downloads
-  - pip and setuptools installation
-  - Development headers included
+- `dirbackup.sh` - Directory backup with multiple compression formats, GPG encryption, SHA256 verification, retention policy, incremental support
+- `etcbackup.sh` - /etc backup wrapper with 90-day retention
+- `passgen.sh` - Password generator with 4 types (alphanumeric/special/passphrase/PIN), strength assessment, JSON/CSV output
+- `webpagedl.sh` - Web page downloader with wget/curl/aria2, retry logic, mirror mode
 
-- `install_salt.sh` - SaltStack master
-  - Modern SaltProject repositories
-  - Generates example state files
-  - Minion key management instructions
-  - Firewall configuration
-  - Works on RHEL and Debian families
+**Python Scripts (rewritten for Python 3):**
 
-- `install_salt_minion.sh` - SaltStack minion
-  - Master server validation
-  - Custom minion ID support
-  - Connection testing
-  - Multi-OS support (moved from server_management/Debian/)
+- `checkcpu.py` - CPU info tool with type hints, cross-platform (Linux/macOS), JSON output, virtualization detection
+- `timer.py` - Command benchmarking with statistics (min/max/mean/median/stdev), compare mode, warmup runs
+- `portcheck.py` - Port checker (maintained)
 
-- `install_squid.sh` - Squid proxy server
-  - Three modes: forward, transparent, reverse
-  - ACL configuration
-  - Site blocking support
-  - Firewall configuration
-
-#### Server Management Scripts (3 scripts)
-- `system_stats.sh` - Comprehensive system information gathering
-  - Multi-OS support (RHEL, Ubuntu, Debian)
-  - Three output formats: text, JSON, CSV
-  - Virtualization detection (KVM, VMware, Xen, etc.)
-  - Container runtime detection (Docker, Podman)
-  - Security status (SELinux, firewall)
-  - Save to file option
-
-- `change_hostname.sh` - Hostname management
-  - RFC 1123 hostname validation
-  - Cloud provider detection (AWS, Azure, GCP)
-  - Automatic /etc/hosts update
-  - Configuration backup before changes
-  - Optional network restart
-  - Multi-OS support
-
-- `selinux_troubleshoot.sh` - SELinux troubleshooting tool (renamed from `permissive_selinux.sh`)
-  - Five commands: status, denials, suggest, permissive, enforcing
-  - audit2why integration for policy suggestions
-  - Security warnings when disabling enforcement
-  - Temporary vs persistent mode changes
-  - Emphasizes troubleshooting over disabling
-
-#### Utility Scripts (4 scripts)
-- `dirbackup.sh` - Enhanced directory backup
-  - Multiple compression formats (gzip, bzip2, xz)
-  - GPG encryption with AES256
-  - SHA256 checksum verification
-  - Retention policy with auto-cleanup
-  - Incremental backup support
-  - Multi-OS support
-
-- `etcbackup.sh` - /etc backup wrapper
-  - Wrapper around dirbackup.sh
-  - Optimized defaults for /etc backups
-  - 90-day retention default
-  - Inherits all dirbackup.sh features
-
-- `passgen.sh` - Advanced password generator
-  - Four password types: alphanumeric, special characters, passphrase, PIN
-  - Password strength assessment with entropy calculation
-  - Avoid ambiguous characters option
-  - Multiple output formats (text, JSON, CSV)
-  - Clipboard integration
-  - Bulk password generation
-
-- `webpagedl.sh` - Web page downloader
-  - Multi-method support (wget, curl, aria2)
-  - Retry logic with configurable count
-  - Mirror mode for entire sites
-  - Authentication support (HTTP Basic)
-  - Download verification
-
-#### Python Scripts (3 scripts, completely rewritten)
-- `checkcpu.py` - CPU information tool
-  - Python 3 with type hints
-  - Cross-platform support (Linux, macOS)
-  - Detailed CPU information (model, vendor, frequency, cache, cores)
-  - JSON output support
-  - Virtual CPU detection
-  - Optional CPU usage and temperature
-  - Verbose mode showing all CPU flags
-
-- `timer.py` - Command benchmarking tool
-  - Python 3 with type hints
-  - Benchmark any shell command
-  - Statistics: min, max, mean, median, standard deviation
-  - Compare mode for two commands
-  - Warmup runs to exclude cold start
-  - Multiple output formats (text, JSON, CSV)
-  - Human-readable time formatting
-
-- `portcheck.py` - Port connectivity checker (maintained)
-  - TCP/UDP support
-  - Port range scanning
-  - JSON output
-  - Concurrent scanning
-
-#### Scripts Moved/Reorganized
-- `checkssh_conn.sh` - Moved from `miscellaneous/` to `installation_scripts/`
-- `create_db.sh` - Moved from `server_management/CentOS/` to `installation_scripts/`
-- `sync_emails.sh` - Moved from `server_management/CentOS/` to `installation_scripts/`
+**Scripts Moved:**
+- `checkssh_conn.sh` - miscellaneous/ → installation_scripts/
+- `create_db.sh` - server_management/CentOS/ → installation_scripts/
+- `sync_emails.sh` - server_management/CentOS/ → installation_scripts/
 
 ### Changed
 
-#### Repository Structure
-Scripts reorganized by function instead of OS:
-- `installation_scripts/` - All software installation scripts (9 scripts)
-- `server_management/` - Server administration tools (3 scripts)
-- `utilities/` - General-purpose utilities (4 scripts)
+**Repository Structure:**
+
+Scripts organized by function instead of OS:
+- `installation_scripts/` - Software installers (9 scripts)
+- `server_management/` - System admin tools (3 scripts)
+- `utilities/` - Backup, passwords, etc. (4 scripts)
 - `python-scripts/` - Python utilities (3 scripts)
-- `lib/` - Shared function library
-- `config/` - Configuration templates
+- `lib/` - Shared functions
+- `config/` - Config templates
 
-#### All Scripts Now Support
-- Multi-OS compatibility (RHEL 8/9, Rocky, AlmaLinux, CentOS Stream, Ubuntu 20.04+, Debian 11+)
-- Modern bash practices: `set -euo pipefail`
-- Trap cleanup handlers
-- Comprehensive error handling
+**All Scripts:**
+- Multi-OS support (RHEL/Rocky/AlmaLinux/Ubuntu/Debian)
+- Modern bash: `set -euo pipefail`, trap cleanup, error handling
 - Environment variable configuration
-- Syslog logging
-- Colored terminal output
+- Syslog logging with colored terminal output
 - Input validation
-- Automatic configuration backups
+- Auto backups before changes
 
-#### Security Improvements
-- No hardcoded credentials anywhere
-- Secure password input using `read -sp`
-- Input validation for all user inputs
-- Root privilege checks only where necessary
-- SELinux enforcement maintained (no `setenforce 0`)
-- Firewall configuration in all installation scripts
-- Automatic configuration backups before changes
-- No password leakage in logs or process lists
+**Security:**
+- No hardcoded credentials
+- Secure password input (`read -sp`)
+- Input validation
+- Root checks only where needed
+- SELinux stays enforcing
+- Firewall config in all installers
+- No password leakage in logs
 
-#### Script Enhancements
+**Script Improvements:**
 
-**system_stats.sh**:
-- Now works on RHEL, Ubuntu, and Debian
-- JSON and CSV output formats added
-- Detects virtualization and containerization
-- Shows security status (SELinux, firewall)
-- Can save output to file
+*system_stats.sh*: Works on RHEL/Ubuntu/Debian, JSON/CSV output, detects virtualization/containers, shows security status
 
-**change_hostname.sh**:
-- Now validates hostnames against RFC 1123
-- Detects cloud providers (AWS, Azure, GCP)
-- Updates /etc/hosts automatically
-- Works on RHEL, Ubuntu, and Debian
+*change_hostname.sh*: RFC 1123 validation, cloud provider detection, updates /etc/hosts
 
-**dirbackup.sh**:
-- Multiple compression formats (gzip, bzip2, xz)
-- GPG encryption support
-- SHA256 verification
-- Retention policy with auto-cleanup
-- Incremental backup support
+*dirbackup.sh*: Multiple compression formats, GPG encryption, SHA256 verification, retention policy, incremental backups
 
-**passgen.sh**:
-- Four password types instead of one
-- Strength assessment with entropy
-- Multiple output formats
-- Bulk generation support
+*passgen.sh*: 4 password types, strength assessment, multiple output formats
 
-**webpagedl.sh**:
-- Three download methods (wget, curl, aria2)
-- Retry logic
-- Mirror mode
-- Authentication support
+*webpagedl.sh*: Three download methods, retry logic, mirror mode, authentication
 
 ### Deprecated
 
-#### Old Script Locations
-All old script locations have been deprecated with clear migration paths:
+**Old Script Locations:**
 
-**From server_management/CentOS/**:
+*From server_management/CentOS/:*
 - `system_stats.sh` → `server_management/system_stats.sh`
 - `change_hostname.sh` → `server_management/change_hostname.sh`
 - `permissive_selinux.sh` → `server_management/selinux_troubleshoot.sh` (renamed)
@@ -259,10 +107,10 @@ All old script locations have been deprecated with clear migration paths:
 - `sync_emails.sh` → `installation_scripts/sync_emails.sh`
 - `nginx/newuser.sh` → `installation_scripts/install_flask.sh` (replaced)
 
-**From server_management/Debian/**:
+*From server_management/Debian/:*
 - `install_salt_minion.sh` → `installation_scripts/install_salt_minion.sh`
 
-**From miscellaneous/**:
+*From miscellaneous/:*
 - `dirbackup.sh` → `utilities/dirbackup.sh`
 - `etcbackup.sh` → `utilities/etcbackup.sh`
 - `passgen.sh` → `utilities/passgen.sh`
@@ -271,74 +119,72 @@ All old script locations have been deprecated with clear migration paths:
 
 ### Removed
 
-#### Old Script Implementations
-- Removed OS-specific script versions in favor of multi-OS scripts
-- Removed hardcoded configuration values in favor of environment variables
-- Removed deprecated `nginx/newuser.sh` (replaced by `install_flask.sh`)
-- Removed old Python 2 implementations of `checkcpu.py` and `timer.py`
+- OS-specific script versions (now multi-OS)
+- Hardcoded config values (now environment variables)
+- Old `nginx/newuser.sh` (replaced by `install_flask.sh`)
+- Old Python 2 versions of checkcpu.py and timer.py
 
-#### Deprecated Directories
-- `server_management/CentOS/` - Scripts moved to top-level categories
-- `server_management/Debian/` - Scripts moved to `installation_scripts/`
-- `miscellaneous/` - Scripts moved to `utilities/` and `installation_scripts/`
+**Deprecated directories:**
+- `server_management/CentOS/` - scripts moved
+- `server_management/Debian/` - scripts moved
+- `miscellaneous/` - scripts moved
 
 ### Fixed
 
-#### Security Vulnerabilities
-- No hardcoded passwords or credentials
-- Proper input validation in all scripts
-- SELinux remains enforcing (no automatic disabling)
-- Proper file permissions on created files
+**Security:**
+- No hardcoded passwords
+- Input validation in all scripts
+- SELinux doesn't get disabled automatically
+- Proper file permissions
 - No command injection vulnerabilities
 
-#### Reliability Issues
-- All scripts use `set -euo pipefail` for strict error handling
-- Trap handlers for cleanup on exit
-- Proper error messages and exit codes
-- Validation of prerequisites before execution
+**Reliability:**
+- All scripts use `set -euo pipefail`
+- Trap handlers for cleanup
+- Better error messages and exit codes
+- Prerequisite validation
 
-#### Compatibility Issues
-- All installation scripts detect and work with both RHEL and Debian families
+**Compatibility:**
+- All install scripts work on RHEL and Debian families
 - Package manager abstraction (dnf/yum/apt)
 - Firewall abstraction (firewalld/ufw)
-- Python 3 compatibility for all Python scripts
-- macOS support in `checkcpu.py`
+- Python 3 for all Python scripts
+- macOS support in checkcpu.py
 
 ### Security
 
-#### Hardening Measures
-- All passwords via secure input (`read -sp`) or environment variables
+**Hardening:**
+- Passwords via `read -sp` or environment variables
 - Input validation prevents command injection
-- Principle of least privilege (root checks only where needed)
-- Comprehensive logging to syslog for audit trail
-- Automatic backup before configuration changes
+- Root privileges only where needed
+- All operations logged to syslog
+- Auto backups before config changes
 - SELinux enforcing mode maintained
-- Firewall enabled and configured by default
+- Firewall enabled by default
 
-#### Encryption
-- GPG encryption for backups with AES256
-- SHA256 checksums for backup verification
-- Let's Encrypt SSL integration in web server installers
+**Encryption:**
+- GPG encryption for backups (AES256)
+- SHA256 checksums
+- Let's Encrypt SSL integration
 
 ---
 
 ## [1.0.0] - Legacy Version
 
-### Initial Scripts
-Basic collection of administration scripts with limited OS support:
+Original collection of scripts with limited OS support:
 
 - Installation scripts for Ansible, Flask, Jenkins, Nagios, Nginx, Python3, Salt, Squid
-- Miscellaneous utilities: SSH checker, backup scripts, password generator, webpage downloader
-- Python 2 scripts: CPU checker (10 lines), timer (17 lines), port checker
-- Server management scripts: hostname changer, database creator, user creator, SELinux configurator, email syncer, system stats
+- Utilities: SSH checker, backups, password gen, webpage downloader
+- Python 2 scripts: checkcpu (10 lines), timer (17 lines), portcheck
+- Server management: hostname, database, SELinux, email sync, system stats
 
-### Limitations of 1.0.0
-- OS-specific scripts (separate for CentOS and Debian)
+**Limitations:**
+- OS-specific (separate CentOS and Debian versions)
 - Limited error handling
 - No shared library
-- Hardcoded values instead of environment variables
-- Basic functionality without advanced features
-- Python 2 scripts (deprecated)
+- Hardcoded values
+- Basic features
+- Python 2
 
 [2.0.0]: https://github.com/yourusername/sysadmin-shell-scripts/compare/v1.0.0...v2.0.0
 [1.0.0]: https://github.com/yourusername/sysadmin-shell-scripts/releases/tag/v1.0.0
